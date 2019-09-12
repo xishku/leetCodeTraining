@@ -93,6 +93,26 @@ TEST_F(SumCal1Test, lengthOfLongestSubstringSpaceStr) {
 	EXPECT_EQ(1, sCal1.lengthOfLongestSubstring(" "));
 }
 
+TEST_F(SumCal1Test, IntegerReverse1534236469) {
+	EXPECT_EQ(9646324351, sCal1.integerReverse(1534236469));
+}
+
+TEST_F(SumCal1Test, IntegerReverse0) {
+	EXPECT_EQ(0, sCal1.integerReverse(0));
+}
+
+TEST_F(SumCal1Test, IntegerReverse120) {
+	EXPECT_EQ(-21, sCal1.integerReverse(-120));
+}
+
+TEST_F(SumCal1Test, IntegerReverse12100) {
+	EXPECT_EQ(-121, sCal1.integerReverse(-12100));
+}
+
+TEST_F(SumCal1Test, IntegerReverse1900) {
+	EXPECT_EQ(91, sCal1.integerReverse(1900));
+}
+
 
 
 
