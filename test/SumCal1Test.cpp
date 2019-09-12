@@ -94,7 +94,11 @@ TEST_F(SumCal1Test, lengthOfLongestSubstringSpaceStr) {
 }
 
 TEST_F(SumCal1Test, IntegerReverse1534236469) {
-	EXPECT_EQ(9646324351, sCal1.integerReverse(1534236469));
+	EXPECT_EQ(0, sCal1.integerReverse(INT_MIN));
+}
+
+TEST_F(SumCal1Test, IntegerReverseINTMAX) {
+	EXPECT_EQ(0, sCal1.integerReverse(INT_MAX));
 }
 
 TEST_F(SumCal1Test, IntegerReverse0) {
