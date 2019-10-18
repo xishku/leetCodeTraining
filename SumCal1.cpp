@@ -2,6 +2,111 @@
 #include  <iostream>
 #include <map>
 #include <algorithm>
+#include <stack>
+
+double SumCal1::myPowRecur(double x, int n) {
+	//cout << "myPowRecur(" << x << ", " << n << ")" << endl;
+	if (x == 0.0) {
+		return 0;
+	}
+
+	if (n == 0) {
+		return 1;
+	}
+	   	 	
+	long long N = n;
+	if (N < 0) {
+		x = 1 / x;
+		N = -N;
+	}
+
+	if (N == 1) {
+		//cout << "return " << x << endl;
+		return x;
+	}
+	
+	if (N >= 2) {
+		double ans = 1.0;
+		double xx = myPowRecur(x, N / 2);
+				
+		if (N % 2 == 1) {
+			ans *= x;
+		}
+
+		ans *= xx * xx;
+		//cout << "return " << ans << endl;
+		return ans;
+	}	
+}
+
+double SumCal1::myPow(double x, int n) {
+	if (x == 0.0) {
+		return 0;
+	}
+
+	if (n == 0) {
+		return 1;
+	}
+
+	long long N = n;
+	if (N < 0) {
+		x = 1 / x;
+		N = -N;
+	}
+	double ans = 1.0;
+	for (long long i = N; i > 1; i /= 2) {
+		//cout << i << endl;
+
+		if (i % 2 == 1) {
+			ans *= x;			
+		}
+				
+		x *= x;		
+		//cout << ans << endl;
+	}
+	ans *= x;
+	return ans;
+}
+
+int SumCal1::maximumProduct(vector<int>& nums) {
+	size_t length = nums.size();
+	if (!(length >= 3 && length <= 10000)) {
+		return 0;
+	}
+	
+	vector<int> sortedNums(nums);
+	sort(sortedNums.begin(), sortedNums.end());
+	
+	return max(sortedNums[0] * sortedNums[1] * sortedNums[length - 1], 
+		sortedNums[length - 3] * sortedNums[length - 2] * sortedNums[length - 1]);
+}
+
+int SumCal1::game(vector<int>& guess, vector<int>& answer) {
+	size_t lenGuess = guess.size();
+	size_t lenAnswer = guess.size();
+
+	if (!(lenGuess == 3 && lenAnswer == 3))
+	{
+		return 0;
+	}
+
+	int count = 0;
+	for (int i = 0; i < lenGuess; ++i)
+	{
+		if (guess.at(i) == answer.at(i))
+		{
+			++count;
+		}
+	}
+	
+	return count;
+}
+
+/*int SumCal1::operator""()
+{
+	return (0 - this->num);
+}*/
+
 
 /***
 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
@@ -239,130 +344,10 @@ nums2 = [3, 4]
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 ***/
 double SumCal1::findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-	size_t len1 = nums1.size();
-	size_t len2 = nums2.size();
 
-	if (0 == len2 && 0 == len1)
-	{
-		return 0.0;
-	}
-
-	bool ordNum = (1 == (len1 + len2) % 2);
-	int pos1 = (int)len1 / 2;
-	int pos2 = (int)len2 / 2;
-
-	if (0 == len1 && 0 < len2)
-	{
-		if (ordNum)
-		{
-			return nums2.at(pos2);
-		}
-		else
-		{
-			return (nums2.at((pos2 - 1)) + nums2.at(pos2)) / 2;
-		}
-	}
-
-
-	if (0 < len1 && 0 == len2)
-	{
-		if (ordNum)
-		{
-			return nums1.at(pos1);
-		}
-		else
-		{
-			return (nums1.at((pos1 - 1)) + nums2.at(pos1)) / 2;
-		}
-	}
-
-	int firstNum2 = nums2.at(0);	
-	for(pos1; pos1 > 0 && pos1 < len1 - 1; )
-	{
-		int tempNum1 = nums1.at(pos1);
-		
-		if (tempNum1 == firstNum2)
-		{
-			break;
-		}
-		else if(tempNum1 < firstNum2)
-		{
-			pos1 = (len1 + pos1) / 2;
-		}
-		else
-		{
-			pos1 /= 2;
-		}		
-	}
-
-	int firstNum1 = nums1.at(0);
-	for (pos2; pos2 > 0 && pos2 < len2 - 1; )
-	{
-		int tempNum2 = nums2.at(pos2);
-
-		if (firstNum1 == tempNum2)
-		{
-			break;
-		}
-		else if (firstNum1 > tempNum2)
-		{
-			pos2 = (pos2 + len2) / 2;
-		}
-		else
-		{
-			pos1 /= 2;
-		}
-	}
-
-
-	if (len1 - 1 == pos1)
-	{
-		if (ordNum)
-		{
-			int pos = ordNum / 2;
-			if (pos < len1)
-			{
-				return nums1.at(pos1);
-			}
-			else
-			{
-				return nums2.at(pos - len1);
-			}
-		}
-		else
-		{
-			int pos = ordNum / 2;
-			if (pos < len1)
-			{
-				return (nums1.at((pos1 - 1)) + nums2.at(pos1)) / 2;;
-			}
-			else
-			{
-				return (nums2.at((pos1 - len1 - 1)) + nums2.at(pos1 - len1)) / 2;
-			}
-		}
-	}
-
-
-	if (0 == pos1)
-	{
-		if (ordNum)
-		{
-			int pos = ordNum / 2;
-			if (pos < len1)
-			{
-				return nums1.at(pos1);
-			}
-			else
-			{
-				return nums2.at(pos - len1);
-			}
-		}
-	}
-
-//todo@error
 	return 0.0;
 }
+
 
 /***
 给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
@@ -396,7 +381,7 @@ int SumCal1::integerReverse(int x) {
 
 		pop /= 10;
 
-		if (push > (INT32_MAX / 10) || push < (INT_MIN / 10) 
+		if (push > (INT32_MAX / 10) || push < (INT_MIN / 10)
 			|| (push == INT_MAX / 10 && pop > 7) || (push == INT_MIN / 10 && pop < -8))
 		{
 			return 0;
@@ -406,6 +391,7 @@ int SumCal1::integerReverse(int x) {
 
 	return push;
 }
+
 
 
 
